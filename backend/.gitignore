@@ -30,3 +30,4 @@ build/
 
 application.properties
 .env
+launch.json
