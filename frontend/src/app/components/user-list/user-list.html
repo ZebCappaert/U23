@@ -1,0 +1,9 @@
+<h1>U23 Softball Team</h1>
+<ul>
+    @for (user of users$|async; track $index) {
+    <li>
+        <p> </p>
+        {{ user.firstName }} {{ user.lastName }} - {{ user.role }}
+    </li>
+    }
+</ul>
