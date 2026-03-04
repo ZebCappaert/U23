@@ -7,6 +7,7 @@ import { User } from '../models/user.model';
   providedIn: 'root',
 })
 export class UserService {
+
   private apiUrl = "http://localhost:8080/api/users/";
 
   constructor(private http: HttpClient) { }
@@ -21,5 +22,8 @@ export class UserService {
     return this.http.post<User>(this.apiUrl, user)
   }
 
-
+  //DELETE
+  deleteUser(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}${id}`);
+  }
 }

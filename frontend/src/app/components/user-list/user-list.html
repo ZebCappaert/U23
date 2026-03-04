@@ -1,9 +1,12 @@
 <h1>U23 Softball Team</h1>
 <ul>
-    @for (user of users$|async; track $index) {
+    @for (user of users$|async; track user.id) {
     <li>
-        <p> </p>
-        {{ user.firstName }} {{ user.lastName }} - {{ user.role }}
+        <span>{{ user.firstName }} {{ user.lastName }} **{{ user.role }}** </span> <br>
+
+        <button (click)="deleteUser(user.id)" class="btn-delete">
+            Verwijderen
+        </button>
     </li>
     }
 </ul>
