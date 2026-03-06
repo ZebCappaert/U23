@@ -1,0 +1,5 @@
+@if (authService.getUser(); as loggedInUser) {
+<h2>Welkom, {{ loggedInUser.username }}, op de home pagina</h2>
+} @else {
+<h2>Welkom, gast, log a.u.b. in.</h2>
+}

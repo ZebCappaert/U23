@@ -1,24 +1,30 @@
 import { Injectable, signal } from '@angular/core';
+import { User } from '../models/user.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    private userRole = signal<string | null>(null);
 
-    setRole(role: string) {
-        this.userRole.set(role);
+    private currentUser = signal<User | null>(null);
+
+    setUser(user: User) {
+        this.currentUser.set(user);
+    }
+
+    getUser() {
+        return this.currentUser();
     }
 
     getRole() {
-        return this.userRole();
-    }
-
-    isCoach() {
-        return this.userRole() === 'COACH';
+        return this.currentUser()?.role || null;
     }
 
     logout() {
-        return this.userRole.set(null)
+        this.currentUser.set(null);
+    }
+
+    isCoach() {
+        return this.currentUser()?.role === 'COACH';
     }
 }

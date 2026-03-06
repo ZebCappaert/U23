@@ -40,8 +40,8 @@ export class UserRegister {
           password: '',
           role: 'PLAYER'
         }
-        this.authService.setRole(savedUser.role);
-        this.router.navigate(['/admin/users']);
+        this.authService.setUser(savedUser);
+        this.router.navigate(['/home']);
       }
     });
   }

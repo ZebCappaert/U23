@@ -25,8 +25,8 @@ export class Login {
     this.userService.login(this.loginData).subscribe({
       next: (user: User) => {
         console.log("logging successful: ", user)
-        this.authService.setRole(user.role)
-        this.router.navigate(['/admin/users'])
+        this.authService.setUser(user)
+        this.router.navigate(['/home'])
       },
       error: (err: any) => {
         console.error("Login fout: ", err);

@@ -1,10 +1,17 @@
 <nav>
-  <a routerLink="/register">Registreren</a> |
-  <a routerLink="/admin/users">Coach Overzicht</a> |
-  <a routerLink="/login">Inloggen</a> |
+  @if (authService.getUser()) {
+  <a routerLink="/home">Home</a> |
 
-  @if (authService.getRole()) {
-  <button (click)="logout()">Uitloggen</button>
+  @if (authService.isCoach()) {
+  <a routerLink="/admin/users">Coach Overzicht</a> |
+  }
+
+  <button (click)="logout()">Uitloggen ({{ authService.getUser()?.username }})</button>
+  }
+
+  @else {
+  <a routerLink="/login">Inloggen</a> |
+  <a routerLink="/register">Account aanmaken</a>
   }
 </nav>
 
