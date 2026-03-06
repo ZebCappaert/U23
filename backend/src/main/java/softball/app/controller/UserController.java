@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import softball.app.dto.LoginDTO;
 import softball.app.jpa.User;
 import softball.app.repository.UserRepository;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +46,18 @@ public class UserController {
         }
         System.out.println("New user added: " + user.getFirstName());
         return userRepository.save(user);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginRequest) {
+        return userRepository.findByUsername(loginRequest.getUsername())
+                .map(user -> {
+                    if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+                        return ResponseEntity.ok(user);
+                    }
+                    return ResponseEntity.status(401).body("Wachtwoord onjuist");
+                })
+                .orElse(ResponseEntity.status(401).body("Gebruiker niet gevonden"));
     }
 
     @DeleteMapping("{id}")

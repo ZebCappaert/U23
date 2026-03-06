@@ -1,0 +1,23 @@
+<div class="login-container">
+    <h2>Inloggen</h2>
+
+    @if (errorMessage) {
+    <p style="color: red;">{{ errorMessage }}</p>
+    }
+
+    <form (ngSubmit)="onLogin()">
+        <div>
+            <label>Gebruikersnaam:</label>
+            <input [(ngModel)]="loginData.username" name="username" required>
+        </div>
+
+        <div>
+            <label>Wachtwoord:</label>
+            <input type="password" [(ngModel)]="loginData.password" name="password" required>
+        </div>
+
+        <button type="submit" [disabled]="!loginData.username || !loginData.password">
+            Log in
+        </button>
+    </form>
+</div>

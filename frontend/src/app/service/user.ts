@@ -8,6 +8,7 @@ import { User } from '../models/user.model';
 })
 export class UserService {
 
+
   private apiUrl = "http://localhost:8080/api/users/";
 
   constructor(private http: HttpClient) { }
@@ -20,6 +21,10 @@ export class UserService {
   //POST
   addUser(user: User): Observable<User> {
     return this.http.post<User>(this.apiUrl, user)
+  }
+
+  login(credentials: any): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}login`, credentials);
   }
 
   //DELETE
