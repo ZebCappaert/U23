@@ -50,6 +50,9 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginRequest) {
+        System.out.println("--- Login Debug ---");
+        System.out.println("Ingevoerde username: " + loginRequest.getUsername());
+        System.out.println("Ingevoerd wachtwoord (raw): " + loginRequest.getPassword());
         return userRepository.findByUsername(loginRequest.getUsername())
                 .map(user -> {
                     if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {

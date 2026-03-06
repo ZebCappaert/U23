@@ -17,4 +17,8 @@ export class AuthService {
     isCoach() {
         return this.userRole() === 'COACH';
     }
+
+    logout() {
+        return this.userRole.set(null)
+    }
 }
