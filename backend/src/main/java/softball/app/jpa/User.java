@@ -1,5 +1,7 @@
 package softball.app.jpa;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
@@ -17,6 +19,7 @@ public class User {
     @Column
     private String username;
 
+    @JsonIgnore
     @Column
     private String password;
 

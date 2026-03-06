@@ -4,11 +4,11 @@ import { UserService } from './service/user';
 import { User } from './models/user.model';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { RouterOutlet } from "@angular/router";
+import { RouterLink, RouterOutlet } from "@angular/router";
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, FormsModule, RouterOutlet],
+  imports: [CommonModule, FormsModule, RouterOutlet, RouterLink],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

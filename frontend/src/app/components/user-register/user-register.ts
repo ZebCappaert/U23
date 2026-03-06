@@ -21,6 +21,7 @@ export class UserRegister {
     username: '',
     firstName: '',
     lastName: '',
+    password: '',
     role: 'PLAYER'
   }
 
@@ -33,6 +34,7 @@ export class UserRegister {
           username: '',
           firstName: '',
           lastName: '',
+          password: '',
           role: 'PLAYER'
         }
         this.router.navigate(['/admin/users']);

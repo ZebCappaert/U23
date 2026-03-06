@@ -3,6 +3,7 @@ package softball.app.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +23,11 @@ import org.springframework.web.bind.annotation.RequestBody;
         RequestMethod.POST, RequestMethod.DELETE })
 public class UserController {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository, PasswordEncoder pe) {
         this.userRepository = userRepository;
+        this.passwordEncoder = pe;
     }
 
     @GetMapping("/")
@@ -34,9 +37,11 @@ public class UserController {
 
     @PostMapping("/")
     public User createUser(@RequestBody User user) {
-        // TODO: password nog integreren
-        if (user.getPassword() == null || user.getPassword().isEmpty()) {
-            user.setPassword("default123");
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        } else {
+            // ALS ER GEEN WACHTWOORD WORDT MEEGEGEVEN DAN WORDT HET WACHTWOORD DE USERNAME
+            user.setPassword(passwordEncoder.encode(user.getUsername()));
         }
         System.out.println("New user added: " + user.getFirstName());
         return userRepository.save(user);
