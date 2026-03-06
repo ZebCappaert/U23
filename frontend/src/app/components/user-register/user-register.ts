@@ -15,6 +15,8 @@ export class UserRegister {
 
   users$: Observable<User[]> | undefined;
 
+  public confirmPassword: string = '';
+
   constructor(private userService: UserService, private router: Router) { }
 
   public newUser: User = {
