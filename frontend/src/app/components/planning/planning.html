@@ -1,0 +1,60 @@
+<div class="planning-container">
+    <h2>Team Planning</h2>
+
+    @if (authService.isCoach()) {
+    <div class="coach-panel">
+        <h3>Nieuwe activiteit inplannen</h3>
+        <div class="form-group">
+            <input type="text" [(ngModel)]="newActivity.title" placeholder="Training/wedstrijd">
+            <input type="text" [(ngModel)]="newActivity.location" placeholder="Locatie">
+            <input type="datetime-local" [(ngModel)]="newActivity.dateTime">
+            <button (click)="saveActivity()" [disabled]="!newActivity.title || !newActivity.location">Opslaan</button>
+        </div>
+    </div>
+    <hr>
+    }
+
+    <div class="activity-list"> @for (act of activities(); track act.id) {
+        <div class="activity-card row-layout">
+            <div class="info-group">
+                <div class="info-item title">
+                    <strong>{{ act.title }}</strong>
+                </div>
+                <div class="info-item date">
+                    <span>📅 {{ act.dateTime | date:'dd-MM HH:mm' }}</span>
+                </div>
+                <div class="info-item location">
+                    <span>📍 {{ act.location }}</span>
+                </div>
+
+                @if (authService.isCoach()) {
+                <div class="info-item attendance-count">
+                    <span class="badge" [ngClass]="getAttendanceCount(act) < 9 ? 'status-low' : 'status-ok'">
+                        👥 {{ getAttendanceCount(act) }} aanwezig
+                    </span>
+                </div>
+                }
+            </div>
+
+            <div class="activity-card row-layout">
+                <div class="actions-group">
+                    <div class="attendance-buttons">
+                        <button class="btn-yes" [class.selected]="checkStatus(act.id) === true"
+                            (click)="submitAttendance(act.id, true)">✅ Ja</button>
+                        <button class="btn-no" [class.selected]="checkStatus(act.id) === false"
+                            (click)="submitAttendance(act.id, false)">❌ Nee</button>
+                    </div>
+
+                    @if (authService.isCoach()) {
+                    <button class="btn-delete" (click)="deleteActivity(act.id)" title="Verwijder activiteit">
+                        🗑️
+                    </button>
+                    }
+                </div>
+            </div>
+        </div>
+        } @empty {
+        <p class="empty-msg">Er zijn momenteel geen activiteiten gepland.</p>
+        }
+    </div>
+</div>

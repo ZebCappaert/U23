@@ -1,6 +1,7 @@
 <nav>
   @if (authService.getUser()) {
   <a routerLink="/home">Home</a> |
+  <a routerLink="/planning">Planning</a> |
 
   @if (authService.isCoach()) {
   <a routerLink="/admin/users">Coach Overzicht</a> |

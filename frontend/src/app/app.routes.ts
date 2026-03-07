@@ -5,6 +5,7 @@ import { adminGuard } from './guard/admin.guard';
 import { Login } from './components/login/login';
 import { Homepage } from './components/homepage/homepage';
 import { basicGuard } from './guard/basic.guard';
+import { Planning } from './components/planning/planning';
 
 export const routes: Routes = [
     // no login
@@ -14,6 +15,7 @@ export const routes: Routes = [
 
     // basic login
     { path: 'home', component: Homepage, canActivate: [basicGuard] },
+    { path: 'planning', component: Planning, canActivate: [basicGuard] },
 
     // ROLE COACH
     { path: 'admin/users', component: UserList, canActivate: [adminGuard] },

@@ -1,0 +1,81 @@
+/* Basis styling voor de knoppen */
+.btn-yes, .btn-no {
+    padding: 8px 16px;
+    cursor: pointer;
+    border: 2px solid #eee; /* Iets dikkere rand voor definitie */
+    border-radius: 6px;
+    background-color: #ffffff;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hover effect voor de JA knop */
+.btn-yes:hover {
+    background-color: #e8f5e9;
+    border-color: #4caf50;
+    color: #2e7d32;
+}
+
+/* Geselecteerde staat voor de JA knop (Groen) */
+.btn-yes.selected {
+    background-color: #4caf50 !important;
+    border-color: #388e3c !important;
+    color: white !important;
+}
+
+/* Hover effect voor de NEE knop */
+.btn-no:hover {
+    background-color: #ffebee;
+    border-color: #f44336;
+    color: #c62828;
+}
+
+/* Geselecteerde staat voor de NEE knop (Rood) */
+.btn-no.selected {
+    background-color: #f44336 !important;
+    border-color: #d32f2f !important;
+    color: white !important;
+}
+
+/* Optioneel: de knoppen iets groter maken als ze geselecteerd zijn */
+.selected {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.badge {
+    background-color: #e9ecef;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    color: #495057;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* De Coach mag het iets opvallender zien */
+.coach-view .badge {
+    background-color: #cfe2ff;
+    color: #084298;
+    border: 1px solid #b6d4fe;
+}
+
+.actions-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn-delete {
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    padding: 5px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-delete:hover {
+    transform: scale(1.2);
+    filter: sepia(1) saturate(10) hue-rotate(-50deg); /* Maakt de emoji roodachtig */
+}

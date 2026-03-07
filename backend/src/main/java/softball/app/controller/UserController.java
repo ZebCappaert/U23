@@ -4,10 +4,8 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import softball.app.dto.LoginDTO;
@@ -20,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", methods = { RequestMethod.GET,
-        RequestMethod.POST, RequestMethod.DELETE })
 public class UserController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -38,24 +34,26 @@ public class UserController {
 
     @PostMapping("/")
     public User createUser(@RequestBody User user) {
-        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword().trim()));
         } else {
-            // ALS ER GEEN WACHTWOORD WORDT MEEGEGEVEN DAN WORDT HET WACHTWOORD DE USERNAME
-            user.setPassword(passwordEncoder.encode(user.getUsername()));
+            String fallback = (user.getUsername() != null) ? user.getUsername().trim() : "default";
+            user.setPassword(passwordEncoder.encode(fallback));
         }
+
+        if (user.getUsername() != null) {
+            user.setUsername(user.getUsername().trim());
+        }
+
         System.out.println("New user added: " + user.getFirstName());
         return userRepository.save(user);
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginRequest) {
-        System.out.println("--- Login Debug ---");
-        System.out.println("Ingevoerde username: " + loginRequest.getUsername());
-        System.out.println("Ingevoerd wachtwoord (raw): " + loginRequest.getPassword());
         return userRepository.findByUsername(loginRequest.getUsername())
                 .map(user -> {
-                    if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+                    if (passwordEncoder.matches(loginRequest.getPassword().trim(), user.getPassword())) {
                         return ResponseEntity.ok(user);
                     }
                     return ResponseEntity.status(401).body("Wachtwoord onjuist");
