@@ -1,29 +1,20 @@
 /* Container */
 .home-container {
-    min-height: 80vh; 
-    padding: 40px 20px;
-    display: flex;
-    justify-content: center; 
-    align-items: center;    
-    background: transparent;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    box-sizing: border-box;
+    padding: 20px 10px; /* Reduced padding on mobile */
+    align-items: flex-start; 
 }
 
 .baseball-plate-card {
     position: relative;
-    width: 500px;
-    min-width: 500px; 
-    max-width: 500px;
+    width: 100%;          
+    max-width: 500px;     
+    margin: 0 auto;     
     background-color: #fcfcfc;
-    
-    padding: 65px 40px 75px 40px; 
-    
-    box-sizing: border-box; 
-    
+    padding: 65px 20px 75px 20px; 
+    box-sizing: border-box;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
-    
-    clip-path: path("M 20,0 A 20,20 0 0,0 0,20 L 0,260 Q 0,260 0,260 L 250,300 L 500,260 L 500,20 A 20,20 0 0,0 480,0 Z");
+
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
 }
 
 .plate-top-accent {
@@ -75,4 +66,11 @@
 .btn-login-redirect:hover {
     background-color: #d60014;
     transform: translateY(-1px);
+}
+
+/* Mobile friendly */
+@media (max-width: 480px) {
+    .welcome-header {
+        font-size: 1.5rem;
+    }
 }
