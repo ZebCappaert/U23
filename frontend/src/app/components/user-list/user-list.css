@@ -1,4 +1,4 @@
-/* --- ROSTER CONTAINER --- */
+
 .roster-container {
     max-width: 800px;
     margin: 30px auto;
@@ -18,7 +18,6 @@ h1 {
     margin-bottom: 30px;
 }
 
-/* --- LIST STYLING --- */
 ul {
     list-style: none;
     padding: 0;
@@ -41,7 +40,6 @@ li:hover {
     background-color: #f1f1f1;
 }
 
-/* --- TEXT & ROLE STYLING --- */
 .user-info {
     font-size: 1.1rem;
     color: #333;

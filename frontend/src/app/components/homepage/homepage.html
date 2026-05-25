@@ -1,14 +1,22 @@
 <div class="home-container">
-    <section class="welcome-section card p-4 mb-4 shadow-sm">
-        @if (authService.getUser(); as loggedInUser) {
-        <h2 class="welcome-header">
-            Welkom <span class="username-highlight">{{ loggedInUser.username }}</span> op de home pagina
-        </h2>
-        } @else {
-        <h2 class="welcome-header">Welkom, <span class="guest-msg">gast</span></h2>
-        <p>Log a.u.b. in om je planning te bekijken.</p>
-        <a routerLink="/login" class="btn-login-redirect">Naar Login</a>
-        }
+    <section class="baseball-plate-card">
+        
+        <svg class="plate-top-accent" viewBox="0 0 420 20" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 0,0 L 420,0 L 420,6 Q 410,6 400,6 L 20,6 Q 10,6 0,6 Z" fill="#e30613" />
+        </svg>
+
+        <div class="plate-content">
+            @if (authService.getUser(); as loggedInUser) {
+                <h2 class="welcome-header">
+                    Welkom <span class="username-highlight">{{ loggedInUser.username }}</span> op de home pagina
+                </h2>
+            } @else {
+                <h2 class="welcome-header">Welkom, <span class="guest-msg">gast</span></h2>
+                <p class="welcome-text">Log in a.u.b. om je planning te bekijken. </p>
+                <a routerLink="/login" class="btn-login-redirect">Naar Login</a>
+            }
+        </div>
+
     </section>
 
     @if (authService.getUser()) {

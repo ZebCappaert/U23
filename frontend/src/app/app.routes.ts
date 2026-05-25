@@ -16,6 +16,8 @@ export const routes: Routes = [
     { path: 'login', component: Login },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
 
+
+    // canActivate: [basicGuard] (editing purposes)
     // basic login
     { path: 'home', component: Homepage, canActivate: [basicGuard] },
     { path: 'planning', component: Planning, canActivate: [basicGuard] },

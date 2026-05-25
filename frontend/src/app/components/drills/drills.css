@@ -1,85 +1,228 @@
-/* --- BASIS CONTAINER --- */
+
 .drills-container {
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 30px auto;
     padding: 25px;
     font-family: 'Segoe UI', Roboto, sans-serif;
-    background-color: #f8f9fa; /* Zelfde lichtgrijze achtergrond als planning */
+    background-color: #f8f9fa;
     border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-/* --- TITELS --- */
-h1 {
-    color: #000;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 30px;
-    border-bottom: 4px solid #ffed00; /* Geel accent zoals bij login */
-    display: block;
-    padding-bottom: 10px;
-}
-
-h2 {
+.drills-container h1 {
     color: #000;
     text-transform: uppercase;
+    font-weight: 900;
     letter-spacing: 1px;
-    border-left: 10px solid #e30613; /* Het kenmerkende Belgisch Rood */
+    border-left: 10px solid #e30613; /* Belgisch Rood */
     padding-left: 15px;
-    margin-top: 40px;
-    margin-bottom: 20px;
-    background-color: #fff;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-radius: 0 8px 8px 0;
+    margin-bottom: 5px;
 }
 
-/* --- DRILL LIJST --- */
-ul {
-    list-style-type: none;
-    padding-left: 0;
+.drills-subtitle {
+    color: #666;
+    margin-bottom: 35px;
+    font-style: italic;
+    font-weight: 600;
+    display: block;
 }
 
-li {
-    background: #ffffff;
-    border: 1px solid #dee2e6;
-    border-radius: 10px;
-    padding: 15px 20px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    transition: border-color 0.3s, transform 0.2s;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+/* Grid met drills*/
+.drills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 30px;
 }
 
-/* Bal-icoon of bullet punt in rood */
-li::before {
-    content: "⚾";
-    color: #e30613;
-    font-size: 1.1rem;
+@media (max-width: 550px) {
+    .drills-grid {
+        grid-template-columns: 1fr;
+    }
+}
+.drill-card {
+    background-color: #111111; 
+    color: #ffffff;
+    border: 1px solid #2a2a2a;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    
+    /* Basehonk vorm */
+    padding: 30px 30px 65px 30px;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 88%, 50% 100%, 0% 88%);
+    
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4))
+            drop-shadow(0 2px 4px rgba(255, 237, 0, 0.05));
 }
 
-/* --- ACCENTEN --- */
-strong {
-    color: #e30613; /* Belangrijke termen in het rood */
-    font-weight: 700;
+.drill-card:hover {
+    transform: translateY(-3px);
+    border-color: #ff9900;
+    filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.6))
+            drop-shadow(0 4px 15px rgba(255, 153, 0, 0.25)); 
+}
+
+.drill-card-header {
+    border-bottom: 2px solid #2a2a2a; 
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    text-align: center; 
+}
+
+.drill-card-header h2 {
+    color: #ffed00; /* Belgisch Goud */
+    text-transform: uppercase;
+    font-size: 1.25rem;
+    font-weight: 900;
+    font-style: italic; 
+    letter-spacing: 1px;
+    margin: 0 auto;
+    
+    /* Basehonk titel */
+    display: inline-block;
+    background: linear-gradient(135deg, #1f1f1f 0%, #161616 100%); 
+    border: 1px solid #333;
+    padding: 10px 35px 25px 35px; 
+    clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 50% 100%, 0% 70%);
+    
+    filter: drop-shadow(0 4px 8px rgba(255, 237, 0, 0.15));
 }
 
 .drill-note {
-    background-color: #000; /* Zwart blokje voor instructies zoals coach-panel */
-    color: #ffed00; /* Geel tekst accent */
-    padding: 8px 15px;
-    border-radius: 6px;
+    display: block;
+    background-color: rgba(227, 6, 19, 0.15); 
+    color: #e30613;
+    border: 1px solid rgba(227, 6, 19, 0.3);
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
     font-weight: bold;
-    display: inline-block;
-    margin-bottom: 15px;
-    margin-left: 5px;
-    font-size: 0.9rem;
+    margin-top: 10px; 
+    margin-right: 10px;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
+.drill-item {
+    display: flex;
+    align-items: flex-start; 
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+.drill-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.drill-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.drill-title {
+    color: #ffed00; 
+    font-weight: 800;
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.drill-description {
+    color: #b3b3b3; 
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+    font-weight: 500;
+}
+
+.action-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    min-width: 55px; 
+    text-align: center;
+    flex-shrink: 0; 
+    box-shadow: inset 0 1px 3px rgba(255,255,255,0.1);
+}
+
+.badge-red {
+    background-color: #a71d2a;
+    color: #ffffff;
+    border: 1px solid #c62828;
+}
+
+.badge-gold {
+    background-color: rgba(212, 175, 55, 0.15);
+    color: #d4af37;
+    border: 1px solid #d4af37;
+}
+
+.badge-grey {
+    background-color: #222222;
+    color: #ffffff;
+    border: 1px solid #333333;
+}
+
+.drill-list-modern {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.drill-list-modern li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    background-color: #161616; 
+    border-radius: 4px;
+    border-left: 3px solid #333333; 
+    transition: all 0.2s ease;
+}
+
+.drill-list-modern li:hover {
+    border-left-color: #ff9900; 
+    background-color: #1c1c1c;
+    padding-left: 16px; 
+}
+
+.count-prefix {
+    color: #ffed00;
+    font-weight: 900;
+    font-size: 0.95rem;
+    min-width: 30px;
+    flex-shrink: 0;
+}
+
+.count-prefix.num {
+    background: #222;
+    color: #ff9900; 
+    border: 1px solid #333;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.drill-text {
+    color: #eeeeee;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
 /* Mobile Responsive */
 @media (max-width: 850px) {
     .drills-container {
