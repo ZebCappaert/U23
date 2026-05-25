@@ -1,38 +1,83 @@
-<h2>Nieuwe speler toevoegen</h2>
-<form (ngSubmit)="saveUser()">
-    <input [(ngModel)]="newUser.username" name="username" placeholder="Gebruikersnaam" required>
-    <input [(ngModel)]="newUser.firstName" name="firstName" placeholder="Voornaam" required>
-    <input [(ngModel)]="newUser.lastName" name="lastName" placeholder="Achternaam" required>
-    <input type="password" [(ngModel)]="newUser.password" name="password" placeholder="Wachtwoord" required>
-    <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Bevestig wachtwoord"
-        required #cpwd="ngModel">
+<svg width="0" height="0" style="position: absolute;">
+  <defs>
+    <clipPath id="rounded-home-plate-roster" clipPathUnits="objectBoundingBox">
+      <path d="M 0.05,0 
+               H 0.95 
+               Q 1,0 1,0.05 
+               V 0.77 
+               Q 1,0.8 0.96,0.82 
+               L 0.53,0.99 
+               Q 0.5,1 0.47,0.99 
+               L 0.04,0.82 
+               Q 0,0.8 0,0.77 
+               V 0.05 
+               Q 0,0 0.05,0 Z" />
+    </clipPath>
+  </defs>
+</svg>
 
-    @if (newUser.password !== confirmPassword && cpwd.touched) {
-    <p style="color: red;">
-        Wachtwoorden komen niet overeen!
-    </p>
-    }
+<div class="registration-container animate-fade-in">
+    <h2>Nieuwe speler toevoegen</h2>
 
-    <select [(ngModel)]="newUser.role" name="role">
-        <option value="PLAYER">Player</option>
-        <option value="COACH">Coach</option>
-        <option value="PARENT">Parent</option>
-    </select>
+    <form (ngSubmit)="saveUser()" class="roster-form">
+        <div class="form-row">
+            <div class="input-group">
+                <label for="username">Gebruikersnaam</label>
+                <input id="username" [(ngModel)]="newUser.username" name="username" placeholder="Bijv. voornaamachternaam123" required autocomplete="off">
+            </div>
+            
+            <div class="input-group">
+                <label for="role">Roster Rol</label>
+                <select id="role" [(ngModel)]="newUser.role" name="role" class="form-select">
+                    <option value="PLAYER">Player</option>
+                    <option value="COACH">Coach</option>
+                    <option value="PARENT">Parent</option>
+                </select>
+            </div>
+        </div>
 
-    @if (newUser.role === 'COACH') {
-    <div style="margin-top: 10px;">
-        <input type="password" [(ngModel)]="newUser.coachCode" name="coachCode" placeholder="Coach verificatiecode"
-            required>
-        <p style="font-size: 0.8em; color: gray;">
-            Alleen coaches hebben deze code.
-        </p>
-    </div>
-    }
+        <div class="form-row">
+            <div class="input-group">
+                <label for="firstName">Voornaam</label>
+                <input id="firstName" [(ngModel)]="newUser.firstName" name="firstName" placeholder="Voornaam" required>
+            </div>
+            <div class="input-group">
+                <label for="lastName">Achternaam</label>
+                <input id="lastName" [(ngModel)]="newUser.lastName" name="lastName" placeholder="Achternaam" required>
+            </div>
+        </div>
 
-    <button type="submit"
-        [disabled]="newUser.password !== confirmPassword || newUser.username.length === 0 || (newUser.role === 'COACH' && !newUser.coachCode)">
-        Opslaan
-    </button>
-</form>
+        <div class="form-row">
+            <div class="input-group">
+                <label for="password">Wachtwoord</label>
+                <input type="password" id="password" [(ngModel)]="newUser.password" name="password" placeholder="••••••••" required>
+            </div>
+            <div class="input-group">
+                <label for="confirmPassword">Bevestig Wachtwoord</label>
+                <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="••••••••" required #cpwd="ngModel">
+            </div>
+        </div>
 
-<hr>
+        @if (newUser.password !== confirmPassword && cpwd.touched) {
+            <div class="error-container">
+                <span class="error-dot"></span>
+                <p class="error-text">Wachtwoorden komen niet overeen!</p>
+            </div>
+        }
+
+        @if (newUser.role === 'COACH') {
+            <div class="coach-verification-panel">
+                <div class="input-group">
+                    <label for="coachCode">Coach verificatiecode</label>
+                    <input type="password" id="coachCode" [(ngModel)]="newUser.coachCode" name="coachCode" placeholder="Voer de staf-beveiligingscode in" required>
+                    <span class="help-text">Alleen geautoriseerde coaches hebben toegang tot deze code.</span>
+                </div>
+            </div>
+        }
+
+        <button type="submit" class="btn-submit-roster"
+            [disabled]="newUser.password !== confirmPassword || !newUser.username || (newUser.role === 'COACH' && !newUser.coachCode)">
+            Speler Toevoegen
+        </button>
+    </form>
+</div>
