@@ -1,3 +1,4 @@
+
 package softball.app.controller;
 
 import java.util.List;
@@ -9,10 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import softball.app.dto.LoginDTO;
+import softball.app.dto.LoginResponseDTO;
 import softball.app.jpa.Role;
 import softball.app.jpa.User;
 import softball.app.repository.AttendanceRepository;
 import softball.app.repository.UserRepository;
+import softball.app.service.AuthTokenService;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,15 +25,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
     private final AttendanceRepository attendanceRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthTokenService tokenService;
 
-    public UserController(UserRepository userRepository, PasswordEncoder pe,
-            AttendanceRepository attendanceRepository) {
+    public UserController(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            AttendanceRepository attendanceRepository,
+            AuthTokenService tokenService) {
         this.userRepository = userRepository;
-        this.passwordEncoder = pe;
+        this.passwordEncoder = passwordEncoder;
         this.attendanceRepository = attendanceRepository;
+        this.tokenService = tokenService;
     }
 
     @GetMapping("/")
@@ -39,63 +49,70 @@ public class UserController {
 
     @PostMapping("/")
     public User createUser(@RequestBody User user) {
-        if (user.getPassword() != null && !user.getPassword().trim().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword().trim()));
-        } else {
-            String fallback = (user.getUsername() != null) ? user.getUsername().trim() : "default";
-            user.setPassword(passwordEncoder.encode(fallback));
+        if (user.getUsername() == null
+                || user.getUsername().isBlank()) {
+            throw new IllegalArgumentException(
+                    "Een gebruikersnaam is verplicht.");
         }
 
-        if (user.getUsername() != null) {
-            user.setUsername(user.getUsername().trim());
+        if (user.getPassword() == null
+                || user.getPassword().isBlank()) {
+            throw new IllegalArgumentException(
+                    "Een wachtwoord is verplicht.");
         }
-        if ("COACH".equals(user.getRole())) {
-            String ingevuldeCode = user.getCoachCode();
-            String geheimeCode = "U23-COACH-SOFTBALL";
 
-            if (!geheimeCode.equals(ingevuldeCode)) {
-                System.out.println("WAARSCHUWING: Foutieve coach-code van " + user.getUsername());
+        user.setUsername(user.getUsername().trim());
+        user.setPassword(
+                passwordEncoder.encode(user.getPassword().trim()));
+
+        if (user.getRole() == Role.COACH) {
+            String enteredCode = user.getCoachCode();
+            String expectedCode = System.getenv("COACH_REGISTRATION_CODE");
+
+            if (expectedCode == null
+                    || expectedCode.isBlank()
+                    || !expectedCode.equals(enteredCode)) {
                 user.setRole(Role.PLAYER);
             }
         }
 
-        System.out.println("New user added: " + user.getFirstName() + " with role: " + user.getRole());
         return userRepository.save(user);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginRequest) {
-        String ingevuld = loginRequest.getPassword();
+    public ResponseEntity<?> login(
+            @RequestBody LoginDTO loginRequest) {
 
-        System.out.println("DEBUG: Lengte van ingevuld wachtwoord: " + (ingevuld != null ? ingevuld.length() : 0));
+        if (loginRequest.getUsername() == null
+                || loginRequest.getPassword() == null) {
+            return ResponseEntity.badRequest()
+                    .body("Gebruikersnaam en wachtwoord zijn verplicht.");
+        }
 
-        return userRepository.findByUsername(loginRequest.getUsername())
+        return userRepository
+                .findByUsername(loginRequest.getUsername().trim())
+                .filter(user -> passwordEncoder.matches(
+                        loginRequest.getPassword(),
+                        user.getPassword()))
                 .map(user -> {
-                    // 2. Check de hash uit de DB (moet exact 60 tekens zijn voor BCrypt)
-                    System.out.println(
-                            "DEBUG: DB Hash lengte: " + user.getPassword().length() + " " + user.getUsername());
-
-                    boolean matches = passwordEncoder.matches(ingevuld, user.getPassword());
-                    System.out.println("DEBUG: MATCH RESULTAAT: " + matches);
-
-                    if (matches) {
-                        return ResponseEntity.ok(user);
-                    }
-                    return ResponseEntity.status(401).body("Wachtwoord onjuist");
+                    String token = tokenService.createToken(user.getId());
+                    return ResponseEntity.ok(
+                            LoginResponseDTO.from(user, token));
                 })
-                .orElse(ResponseEntity.status(401).body("Gebruiker niet gevonden"));
+                .orElseGet(() -> ResponseEntity.status(401)
+                        .body(null));
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(
+            @PathVariable Long id) {
         if (userRepository.existsById(id)) {
             User user = userRepository.findById(id).orElseThrow();
             attendanceRepository.deleteByUser(user);
             userRepository.deleteById(id);
             return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
         }
-    }
 
+        return ResponseEntity.notFound().build();
+    }
 }
